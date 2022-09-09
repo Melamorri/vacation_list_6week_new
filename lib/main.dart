@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => Home(),
-        '/details': (context) => DetailScreen(),
+        '/details': (context) => const DetailScreen(),
       },
     );
   }
@@ -23,13 +23,11 @@ class BaliPlace {
   final String ruName;
   final String baliName;
   String image;
-  int? indexPlace;
 
   BaliPlace({
     required this.ruName,
     required this.baliName,
     required this.image,
-    int? indexPlace,
   });
 }
 
@@ -53,10 +51,10 @@ List<BaliPlace> placesList = [
 
 class Home extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  HomeState createState() => HomeState();
 }
 
-class _HomeState extends State<Home> {
+class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -77,11 +75,11 @@ class _HomeState extends State<Home> {
                         margin: const EdgeInsets.all(10),
                         child: ListTile(
                           leading: Hero(
-                            tag: placesList[index],
+                            tag: placesList[index].ruName,
                             child: CircleAvatar(
                               radius: 30.0,
                               backgroundImage:
-                                  NetworkImage('${placesList[index].image}'),
+                                  NetworkImage(placesList[index].image),
                             ),
                           ),
                           title: Text(placesList[index].ruName),
@@ -91,10 +89,10 @@ class _HomeState extends State<Home> {
                               context,
                               '/details',
                               arguments: BaliPlace(
-                                  ruName: placesList[index].ruName,
-                                  baliName: placesList[index].baliName,
-                                  image: placesList[index].image,
-                                  indexPlace: index),
+                                ruName: placesList[index].ruName,
+                                baliName: placesList[index].baliName,
+                                image: placesList[index].image,
+                              ),
                             );
                           },
                         ),
@@ -128,15 +126,15 @@ class _DetailScreenState extends State<DetailScreen> {
       body: Column(
         children: [
           Hero(
-            tag: {argument.indexPlace},
+            tag: argument.ruName,
             child: Image(
-              image: NetworkImage('${argument.image}'),
+              image: NetworkImage(argument.image),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              '${argument.baliName}',
+              argument.baliName,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
